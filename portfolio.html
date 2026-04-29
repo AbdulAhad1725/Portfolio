@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdul Ahad — UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #FDFAF6;
+    --surface:  #F4EFE8;
+    --card:     #FFFFFF;
+    --accent:   #6C63FF;
+    --accent2:  #FF6584;
+    --accent3:  #43BF8E;
+    --dark:     #1A1A2E;
+    --mid:      #5A5A7A;
+    --muted:    #9A9AB0;
+    --border:   rgba(108,99,255,0.12);
+    --shadow:   0 8px 40px rgba(108,99,255,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--dark);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(253,250,246,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--dark); text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 0.82rem; font-weight: 500;
+    color: var(--mid); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: #fff !important;
+    padding: 0.55rem 1.4rem; border-radius: 100px;
+    font-size: 0.8rem !important; font-weight: 600 !important;
+    transition: box-shadow 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { box-shadow: 0 6px 24px rgba(108,99,255,0.4); transform: translateY(-1px); color: #fff !important; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 4rem;
+    padding: 9rem 4rem 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-blob {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    filter: blur(70px); opacity: 0.45;
+  }
+  .blob1 { width: 480px; height: 480px; background: radial-gradient(circle, #c7c3ff 0%, transparent 70%); top: -80px; right: -60px; animation: blobDrift 10s ease-in-out infinite; }
+  .blob2 { width: 320px; height: 320px; background: radial-gradient(circle, #ffc3d0 0%, transparent 70%); bottom: 60px; left: -60px; animation: blobDrift 14s ease-in-out infinite reverse; }
+  .blob3 { width: 200px; height: 200px; background: radial-gradient(circle, #ade8d0 0%, transparent 70%); top: 50%; left: 40%; animation: blobDrift 8s ease-in-out infinite 2s; }
+  @keyframes blobDrift {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(20px, -20px) scale(1.06); }
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent);
+    background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.2);
+    padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.6rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 7px; height: 7px;
+    background: var(--accent2); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.6} }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 700; line-height: 1.08;
+    letter-spacing: -0.03em; margin-bottom: 0.4rem;
+  }
+  .hero-name em { font-style: italic; color: var(--accent); }
+  .hero-role {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.15rem; font-weight: 300; color: var(--mid);
+    margin-bottom: 1.4rem; letter-spacing: 0.01em;
+  }
+  .hero-desc {
+    font-size: 0.92rem; line-height: 1.85; color: var(--mid);
+    max-width: 460px; margin-bottom: 2.4rem;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-fill {
+    background: var(--accent); color: #fff;
+    padding: 0.9rem 2.2rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 600; text-decoration: none;
+    transition: box-shadow 0.25s, transform 0.25s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-fill:hover { box-shadow: 0 10px 32px rgba(108,99,255,0.4); transform: translateY(-2px); }
+  .btn-outline {
+    border: 1.5px solid var(--border); color: var(--dark);
+    padding: 0.9rem 2.2rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 500; text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+  }
+  .hero-card-wrap {
+    position: relative; width: 100%; max-width: 420px;
+  }
+
+  /* floating UX concept cards */
+  .ux-card {
+    background: #fff; border-radius: 20px;
+    box-shadow: var(--shadow); padding: 1.2rem 1.5rem;
+    position: relative;
+  }
+  .ux-card-main {
+    border: 1px solid var(--border);
+    z-index: 3;
+  }
+  .ux-card-float {
+    position: absolute;
+    font-size: 0.75rem; font-weight: 600;
+    padding: 0.7rem 1rem; border-radius: 14px;
+    display: flex; align-items: center; gap: 0.5rem;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    animation: float 3s ease-in-out infinite;
+    z-index: 4;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .fc1 { background:#fff; border:1px solid rgba(108,99,255,0.2); color:var(--accent); top:-30px; right:-20px; animation-delay:0s; }
+  .fc2 { background:#fff; border:1px solid rgba(255,101,132,0.2); color:var(--accent2); bottom:-20px; left:-20px; animation-delay:1s; }
+  .fc3 { background:#fff; border:1px solid rgba(67,191,142,0.2); color:var(--accent3); top:40%; right:-40px; animation-delay:0.5s; }
+
+  .process-row {
+    display: flex; align-items: center; gap: 0.5rem;
+    flex-wrap: wrap; margin-top: 0.8rem;
+  }
+  .p-step {
+    font-size: 0.68rem; font-weight: 600;
+    padding: 0.3rem 0.8rem; border-radius: 100px;
+    background: rgba(108,99,255,0.08); color: var(--accent);
+  }
+  .p-arrow { color: var(--muted); font-size: 0.8rem; }
+  .card-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 0.6rem; }
+  .card-headline { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 0.3rem; }
+  .card-sub { font-size: 0.78rem; color: var(--mid); line-height: 1.6; }
+
+  /* wireframe mockup inside card */
+  .wf-screen {
+    background: var(--surface); border-radius: 12px;
+    padding: 1rem; margin-top: 1rem;
+    display: grid; gap: 0.5rem;
+  }
+  .wf-bar { background: rgba(108,99,255,0.15); border-radius: 6px; height: 10px; }
+  .wf-bar.short { width: 55%; }
+  .wf-bar.med { width: 78%; }
+  .wf-row { display: flex; gap: 0.5rem; }
+  .wf-box { flex:1; background: rgba(108,99,255,0.08); border-radius: 8px; height: 44px; }
+  .wf-box.accent-box { background: rgba(108,99,255,0.25); }
+
+  /* ── SHARED SECTION ── */
+  section { position: relative; }
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 4rem; }
+
+  .sec-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem;
+  }
+  .sec-eyebrow::before { content:''; width:24px; height:2px; background:var(--accent); border-radius:2px; }
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 700; line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+  .sec-title em { font-style: italic; color: var(--accent); }
+  .sec-sub { font-size: 0.9rem; color: var(--mid); line-height: 1.7; max-width: 520px; }
+
+  /* ── PROCESS ── */
+  #process { padding: 6rem 0; background: var(--surface); }
+  .process-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .process-card {
+    background: #fff; border-radius: 20px;
+    padding: 1.8rem 1.5rem; border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .process-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .process-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+  .process-card:hover::before { opacity: 1; }
+  .pc-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.2rem; font-weight: 700; color: rgba(108,99,255,0.12);
+    line-height: 1; margin-bottom: 0.8rem;
+  }
+  .pc-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .pc-title { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; }
+  .pc-desc { font-size: 0.8rem; line-height: 1.7; color: var(--mid); }
+
+  /* ── PROJECTS ── */
+  #projects { padding: 6rem 0; }
+  .projects-list { display: grid; gap: 2rem; margin-top: 3rem; }
+
+  .proj-card {
+    background: #fff; border-radius: 24px;
+    border: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1.4fr; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .proj-card:nth-child(even) { direction: rtl; }
+  .proj-card:nth-child(even) > * { direction: ltr; }
+  .proj-card:hover { transform: translateY(-4px); box-shadow: 0 16px 60px rgba(108,99,255,0.13); }
+
+  .proj-visual {
+    display: flex; align-items: center; justify-content: center;
+    padding: 2.5rem; min-height: 280px;
+  }
+  .proj-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+  .ptag {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.75rem; border-radius: 100px; border: 1.5px solid;
+  }
+  .ptag-purple { border-color: rgba(108,99,255,0.3); color: var(--accent); background: rgba(108,99,255,0.05); }
+  .ptag-pink   { border-color: rgba(255,101,132,0.3); color: var(--accent2); background: rgba(255,101,132,0.05); }
+  .ptag-green  { border-color: rgba(67,191,142,0.3);  color: var(--accent3); background: rgba(67,191,142,0.05); }
+  .ptag-warm   { border-color: rgba(255,168,80,0.35); color: #e8900a; background: rgba(255,168,80,0.07); }
+
+  .proj-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.2;
+    margin-bottom: 0.8rem; color: var(--dark);
+  }
+  .proj-desc { font-size: 0.84rem; line-height: 1.8; color: var(--mid); margin-bottom: 1.4rem; }
+  .proj-points { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.4rem; }
+  .proj-points li {
+    font-size: 0.8rem; color: var(--mid); line-height: 1.6;
+    padding-left: 1.1rem; position: relative;
+  }
+  .proj-points li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.7rem; top: 2px; }
+  .proj-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.8rem; font-weight: 600; color: var(--accent);
+    text-decoration: none; border-bottom: 1.5px solid rgba(108,99,255,0.25);
+    padding-bottom: 2px; transition: border-color 0.2s;
+    align-self: flex-start;
+  }
+  .proj-link:hover { border-color: var(--accent); }
+
+  /* Visual mockups inside project cards */
+  .mock-voting {
+    background: linear-gradient(135deg, #e8e5ff 0%, #f0eeff 100%);
+    border-radius: 18px; width: 100%; padding: 1.5rem;
+  }
+  .mock-hospital {
+    background: linear-gradient(135deg, #e5f8f0 0%, #eef9f5 100%);
+    border-radius: 18px; width: 100%; padding: 1.5rem;
+  }
+  .mock-hotel {
+    background: linear-gradient(135deg, #fff0f3 0%, #fff5f8 100%);
+    border-radius: 18px; width: 100%; padding: 1.5rem;
+  }
+  .mock-topbar {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 1rem; padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+  }
+  .mock-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .mock-title-bar { flex:1; height: 8px; border-radius: 4px; background: rgba(0,0,0,0.1); }
+  .mock-field { height: 32px; border-radius: 8px; background: rgba(255,255,255,0.7); margin-bottom: 0.5rem; display: flex; align-items: center; padding: 0 0.7rem; }
+  .mock-field-label { font-size: 0.6rem; color: rgba(0,0,0,0.35); font-family: 'Space Mono',monospace; }
+  .mock-btn { height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: #fff; letter-spacing: 0.05em; margin-top: 0.8rem; }
+  .mock-card-row { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
+  .mock-mini-card { flex:1; background: rgba(255,255,255,0.75); border-radius: 10px; padding: 0.6rem; }
+  .mock-mini-label { font-size: 0.55rem; color: rgba(0,0,0,0.4); font-family:'Space Mono',monospace; margin-bottom: 0.3rem; }
+  .mock-mini-val { font-size: 0.72rem; font-weight: 700; color: var(--dark); }
+  .mock-queue { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.8rem; }
+  .mock-queue-item { background: rgba(255,255,255,0.75); border-radius: 8px; padding: 0.45rem 0.7rem; display: flex; align-items: center; gap: 0.5rem; }
+  .mock-priority { width: 6px; height: 6px; border-radius: 50%; }
+  .mock-queue-name { font-size: 0.65rem; font-weight: 600; color: var(--dark); }
+  .mock-queue-time { font-size: 0.58rem; color: var(--muted); margin-left: auto; font-family:'Space Mono',monospace; }
+
+  /* ── SKILLS ── */
+  #skills { padding: 6rem 0; background: var(--surface); }
+  .skills-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; align-items: start; }
+  .skill-group-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 1.2rem; }
+  .skill-pill-wrap { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .skill-pill {
+    font-size: 0.8rem; font-weight: 500; color: var(--dark);
+    background: #fff; border: 1px solid var(--border);
+    padding: 0.5rem 1.1rem; border-radius: 100px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .skill-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(108,99,255,0.04); }
+  .skill-pill.primary { background: rgba(108,99,255,0.08); border-color: rgba(108,99,255,0.3); color: var(--accent); font-weight: 600; }
+  .cs-skills { margin-top: 2rem; }
+
+  /* ── ABOUT ── */
+  #about { padding: 6rem 0; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem; }
+  .about-image-area {
+    position: relative; display: flex; justify-content: center; align-items: center;
+  }
+  .about-shape {
+    width: 340px; height: 380px; border-radius: 40% 60% 60% 40% / 50% 50% 60% 40%;
+    background: linear-gradient(135deg, #e8e5ff 0%, #ffd6de 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem;
+    animation: morphShape 8s ease-in-out infinite;
+  }
+  @keyframes morphShape {
+    0%,100% { border-radius: 40% 60% 60% 40% / 50% 50% 60% 40%; }
+    50%      { border-radius: 60% 40% 40% 60% / 40% 60% 50% 50%; }
+  }
+  .about-stat-float {
+    position: absolute; background: #fff; border-radius: 16px;
+    padding: 0.9rem 1.2rem; box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+  }
+  .asf1 { top: 20px; right: -10px; }
+  .asf2 { bottom: 20px; left: -10px; }
+  .asf-num { font-family:'Playfair Display',serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .asf-label { color: var(--muted); font-size: 0.68rem; font-weight: 500; margin-top: 2px; }
+
+  .about-text p { font-size: 0.88rem; line-height: 1.85; color: var(--mid); margin-bottom: 1rem; }
+  .about-interests { margin-top: 1.5rem; }
+  .interest-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+  .interest-chip {
+    font-size: 0.78rem; padding: 0.4rem 1rem; border-radius: 100px;
+    background: var(--surface); color: var(--mid); font-weight: 500;
+  }
+
+  /* ── EDUCATION ── */
+  #education { padding: 6rem 0; background: var(--surface); }
+  .edu-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .edu-card {
+    background: #fff; border-radius: 20px; padding: 2rem;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .edu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .edu-card::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+  }
+  .edu-year { font-family:'Space Mono',monospace; font-size: 0.7rem; color: var(--accent); font-weight: 700; margin-bottom: 0.6rem; letter-spacing: 0.1em; }
+  .edu-degree { font-family:'Playfair Display',serif; font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 0.3rem; }
+  .edu-school { font-size: 0.82rem; color: var(--mid); font-weight: 500; margin-bottom: 0.8rem; }
+  .edu-detail { font-size: 0.78rem; color: var(--muted); }
+  .edu-courses { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .edu-tag { font-size: 0.65rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 100px; background: rgba(108,99,255,0.07); color: var(--accent); }
+
+  /* ── CONTACT ── */
+  #contact { padding: 6rem 0; }
+  .contact-inner { text-align: center; max-width: 620px; margin: 0 auto; }
+  .contact-inner .sec-title { font-size: clamp(2.2rem, 4vw, 3.2rem); }
+  .contact-desc { font-size: 0.9rem; color: var(--mid); line-height: 1.8; margin-bottom: 2.5rem; }
+  .contact-cards { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .contact-card {
+    display: flex; align-items: center; gap: 0.7rem;
+    background: #fff; border: 1px solid var(--border);
+    padding: 0.9rem 1.5rem; border-radius: 16px;
+    text-decoration: none; color: var(--dark);
+    font-size: 0.82rem; font-weight: 500;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .contact-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); color: var(--accent); }
+  .cc-icon { font-size: 1.1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.5);
+    padding: 2rem 4rem; display: flex;
+    justify-content: space-between; align-items: center;
+    font-size: 0.75rem;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 4rem; }
+    .hero-right { display: none; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .proj-card { grid-template-columns: 1fr; }
+    .proj-card:nth-child(even) { direction: ltr; }
+    .proj-visual { display: none; }
+    .skills-two-col, .about-grid, .edu-cards { grid-template-columns: 1fr; }
+    .container { padding: 0 1.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Abdul<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#process">Process</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="blob1 hero-blob"></div>
+  <div class="blob2 hero-blob"></div>
+  <div class="blob3 hero-blob"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">UX Designer · AIR University · Islamabad</div>
+    <h1 class="hero-name">
+      Designing<br>
+      <em>experiences</em><br>
+      that feel right.
+    </h1>
+    <p class="hero-role">Abdul Ahad — UX Designer & CS Student</p>
+    <p class="hero-desc">
+      I bring a developer's precision and a designer's empathy. With hands-on experience building user-facing applications in Python and C++, I understand how design decisions become real software — and I use that to craft intuitive, purposeful interfaces.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-fill">View My Work ↓</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card-wrap">
+      <div class="ux-card ux-card-main">
+        <div class="card-label">Current Focus</div>
+        <div class="card-headline">User-Centered Design</div>
+        <div class="card-sub">Translating real user needs into clean, functional interfaces.</div>
+        <div class="process-row">
+          <span class="p-step">Research</span><span class="p-arrow">→</span>
+          <span class="p-step">Wireframe</span><span class="p-arrow">→</span>
+          <span class="p-step">Prototype</span><span class="p-arrow">→</span>
+          <span class="p-step">Test</span>
+        </div>
+        <div class="wf-screen">
+          <div class="wf-bar short"></div>
+          <div class="wf-bar med"></div>
+          <div class="wf-row">
+            <div class="wf-box accent-box"></div>
+            <div class="wf-box"></div>
+          </div>
+          <div class="wf-bar" style="width:40%;height:8px;"></div>
+        </div>
+      </div>
+      <div class="ux-card-float fc1">🎯 User Research</div>
+      <div class="ux-card-float fc2">⚡ Dev-Aware Design</div>
+      <div class="ux-card-float fc3">📐 Wireframing</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">My Approach</div>
+      <h2 class="sec-title">How I <em>design</em></h2>
+      <p class="sec-sub">Every project starts with understanding people — not pixels. Here's my process for turning problems into products.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-card reveal">
+        <div class="pc-num">01</div>
+        <div class="pc-icon">🔍</div>
+        <div class="pc-title">Discover & Research</div>
+        <p class="pc-desc">Understanding who the users are, what they need, and where current solutions fall short. Personas, user flows, and pain-point mapping.</p>
+      </div>
+      <div class="process-card reveal">
+        <div class="pc-num">02</div>
+        <div class="pc-icon">📐</div>
+        <div class="pc-title">Define & Wireframe</div>
+        <p class="pc-desc">Structuring information architecture and sketching low-fidelity wireframes to map out user journeys before touching visuals.</p>
+      </div>
+      <div class="process-card reveal">
+        <div class="pc-num">03</div>
+        <div class="pc-icon">🎨</div>
+        <div class="pc-title">Design & Prototype</div>
+        <p class="pc-desc">Building interactive prototypes in Figma with consistent design systems — typography, color, spacing — that can be handed off to dev.</p>
+      </div>
+      <div class="process-card reveal">
+        <div class="pc-num">04</div>
+        <div class="pc-icon">🧪</div>
+        <div class="pc-title">Test & Iterate</div>
+        <p class="pc-desc">Validating with real users. Gathering feedback, identifying friction points, and refining until the experience feels effortless.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Selected Work</div>
+      <h2 class="sec-title">Projects with <em>purpose</em></h2>
+      <p class="sec-sub">Real systems I designed and built — each with intentional UX decisions behind every screen, flow, and interaction.</p>
+    </div>
+
+    <div class="projects-list">
+
+      <!-- P1: Voting -->
+      <div class="proj-card reveal">
+        <div class="proj-visual">
+          <div class="mock-voting" style="max-width:260px;">
+            <div class="mock-topbar">
+              <div class="mock-dot" style="background:#6C63FF"></div>
+              <div class="mock-dot" style="background:#FF6584"></div>
+              <div class="mock-title-bar"></div>
+            </div>
+            <div style="font-size:0.65rem;font-weight:700;color:#6C63FF;letter-spacing:0.1em;margin-bottom:0.6rem;">VOTER AUTHENTICATION</div>
+            <div class="mock-field"><span class="mock-field-label">Voter ID ················</span></div>
+            <div class="mock-field"><span class="mock-field-label">Password ··············</span></div>
+            <div class="mock-btn" style="background:linear-gradient(90deg,#6C63FF,#9b94ff);">AUTHENTICATE →</div>
+            <div class="mock-card-row">
+              <div class="mock-mini-card"><div class="mock-mini-label">CANDIDATES</div><div class="mock-mini-val">4</div></div>
+              <div class="mock-mini-card"><div class="mock-mini-label">VOTES CAST</div><div class="mock-mini-val">128</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags">
+            <span class="ptag ptag-purple">UX Design</span>
+            <span class="ptag ptag-purple">C++ / OOP</span>
+            <span class="ptag ptag-pink">User Flows</span>
+          </div>
+          <h3 class="proj-title">Digital Voting System</h3>
+          <p class="proj-desc">A secure, object-oriented voting platform where every interaction was mapped before a single line of code was written. The UX challenge: make a complex, high-stakes process feel simple and trustworthy.</p>
+          <ul class="proj-points">
+            <li>Designed step-by-step user flows for voter registration, authentication, and ballot casting to minimize errors in a high-stakes context.</li>
+            <li>Applied encapsulation and inheritance to mirror real-world election entities, making the system's logic match users' mental models.</li>
+            <li>Implemented clear error feedback at every input stage — reducing user frustration from invalid or duplicate entries.</li>
+          </ul>
+          <a href="https://github.com/AbdulAhad1725" target="_blank" class="proj-link">View on GitHub ↗</a>
+        </div>
+      </div>
+
+      <!-- P2: Hospital -->
+      <div class="proj-card reveal">
+        <div class="proj-visual">
+          <div class="mock-hospital" style="max-width:260px;">
+            <div class="mock-topbar">
+              <div class="mock-dot" style="background:#43BF8E"></div>
+              <div class="mock-dot" style="background:#6C63FF"></div>
+              <div class="mock-title-bar"></div>
+            </div>
+            <div style="font-size:0.65rem;font-weight:700;color:#43BF8E;letter-spacing:0.1em;margin-bottom:0.6rem;">PATIENT QUEUE</div>
+            <div class="mock-queue">
+              <div class="mock-queue-item">
+                <div class="mock-priority" style="background:#e53935"></div>
+                <span class="mock-queue-name">Ahmed R.</span>
+                <span style="font-size:0.55rem;color:#43BF8E;font-weight:700;margin-left:4px;">CRITICAL</span>
+                <span class="mock-queue-time">09:02</span>
+              </div>
+              <div class="mock-queue-item">
+                <div class="mock-priority" style="background:#ff9800"></div>
+                <span class="mock-queue-name">Sara M.</span>
+                <span style="font-size:0.55rem;color:#ff9800;font-weight:700;margin-left:4px;">URGENT</span>
+                <span class="mock-queue-time">09:15</span>
+              </div>
+              <div class="mock-queue-item">
+                <div class="mock-priority" style="background:#43BF8E"></div>
+                <span class="mock-queue-name">Bilal K.</span>
+                <span style="font-size:0.55rem;color:#43BF8E;font-weight:700;margin-left:4px;">STABLE</span>
+                <span class="mock-queue-time">09:31</span>
+              </div>
+            </div>
+            <div class="mock-card-row" style="margin-top:0.8rem;">
+              <div class="mock-mini-card"><div class="mock-mini-label">DOCTORS</div><div class="mock-mini-val">6</div></div>
+              <div class="mock-mini-card"><div class="mock-mini-label">WAITING</div><div class="mock-mini-val">12</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags">
+            <span class="ptag ptag-green">Info Architecture</span>
+            <span class="ptag ptag-green">C++ / DSA</span>
+            <span class="ptag ptag-purple">Priority UX</span>
+          </div>
+          <h3 class="proj-title">Hospital Management System</h3>
+          <p class="proj-desc">A data-driven management system where the biggest UX challenge was representing urgency — helping staff instantly understand which patients need attention first.</p>
+          <ul class="proj-points">
+            <li>Modeled patient and appointment workflows using linked lists and queues, translating real hospital logic into clear information architecture.</li>
+            <li>Designed priority-based patient queuing for emergency triage — making a life-critical UX decision around urgency and task hierarchy.</li>
+            <li>Built a modular structure for doctors, patients, and records — keeping the interface scannable and reducing cognitive load for staff.</li>
+          </ul>
+          <a href="https://github.com/AbdulAhad1725" target="_blank" class="proj-link">View on GitHub ↗</a>
+        </div>
+      </div>
+
+      <!-- P3: Hotel -->
+      <div class="proj-card reveal">
+        <div class="proj-visual">
+          <div class="mock-hotel" style="max-width:260px;">
+            <div class="mock-topbar">
+              <div class="mock-dot" style="background:#FF6584"></div>
+              <div class="mock-dot" style="background:#FFB347"></div>
+              <div class="mock-title-bar"></div>
+            </div>
+            <div style="font-size:0.65rem;font-weight:700;color:#FF6584;letter-spacing:0.1em;margin-bottom:0.6rem;">ROOM BOOKING</div>
+            <div class="mock-field"><span class="mock-field-label">Guest Name ··········</span></div>
+            <div class="mock-field"><span class="mock-field-label">Check-In Date ·······</span></div>
+            <div style="display:flex;gap:0.5rem;">
+              <div class="mock-field" style="flex:1;"><span class="mock-field-label">Room 101</span></div>
+              <div class="mock-field" style="flex:1;"><span class="mock-field-label">₹ 2,400</span></div>
+            </div>
+            <div class="mock-btn" style="background:linear-gradient(90deg,#FF6584,#ffb3c1);">CONFIRM BOOKING →</div>
+            <div class="mock-card-row">
+              <div class="mock-mini-card"><div class="mock-mini-label">OCCUPIED</div><div class="mock-mini-val">18/24</div></div>
+              <div class="mock-mini-card"><div class="mock-mini-label">REVENUE</div><div class="mock-mini-val">↑ 12%</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags">
+            <span class="ptag ptag-pink">GUI Design</span>
+            <span class="ptag ptag-warm">Python · Tkinter</span>
+            <span class="ptag ptag-pink">SQL / DBMS</span>
+          </div>
+          <h3 class="proj-title">Hotel Management System</h3>
+          <p class="proj-desc">A full-stack desktop application where I made every GUI design decision — from form layout to navigation flow — making this my most tangible UX project as it shipped as a real working product.</p>
+          <ul class="proj-points">
+            <li>Designed and built a complete GUI with Python Tkinter, making deliberate choices about form layout, button placement, and user navigation across screens.</li>
+            <li>Integrated an SQL database with a normalized relational schema — translating back-end data clarity into a clean, consistent front-end experience.</li>
+            <li>Focused on reducing manual errors during booking — designing clear field labels, validation feedback, and confirmation screens.</li>
+          </ul>
+          <a href="https://github.com/AbdulAhad1725" target="_blank" class="proj-link">View on GitHub ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Capabilities</div>
+      <h2 class="sec-title">Skills & <em>tools</em></h2>
+      <p class="sec-sub">A unique blend of design thinking and engineering ability — I understand both sides of the product development process.</p>
+    </div>
+    <div class="skills-two-col">
+      <div class="reveal">
+        <div class="skill-group-title">UX & Design</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill primary">User Research</span>
+          <span class="skill-pill primary">Wireframing</span>
+          <span class="skill-pill primary">Prototyping</span>
+          <span class="skill-pill primary">User Flows</span>
+          <span class="skill-pill primary">Information Architecture</span>
+          <span class="skill-pill primary">Usability Testing</span>
+          <span class="skill-pill">Figma (Learning)</span>
+          <span class="skill-pill">Adobe XD (Learning)</span>
+          <span class="skill-pill">Design Systems</span>
+          <span class="skill-pill">Accessibility Basics</span>
+        </div>
+
+        <div class="skill-group-title" style="margin-top:2rem;">Soft Skills</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill">Analytical Thinking</span>
+          <span class="skill-pill">Attention to Detail</span>
+          <span class="skill-pill">Communication</span>
+          <span class="skill-pill">Collaboration</span>
+          <span class="skill-pill">Eagerness to Learn</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="skill-group-title">Technical (Dev-Aware Designer Edge)</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill primary">Python · Tkinter</span>
+          <span class="skill-pill primary">C++ · OOP · DSA</span>
+          <span class="skill-pill primary">SQL · MySQL · SQLite</span>
+          <span class="skill-pill primary">Database Design</span>
+          <span class="skill-pill">HTML · CSS (Basic)</span>
+          <span class="skill-pill">MS Office Suite</span>
+        </div>
+
+        <div class="skill-group-title" style="margin-top:2rem;">CS Concepts</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill">OOP Principles</span>
+          <span class="skill-pill">Data Structures</span>
+          <span class="skill-pill">DBMS</span>
+          <span class="skill-pill">Algorithms</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-area reveal">
+        <div class="about-shape">🎨</div>
+        <div class="about-stat-float asf1">
+          <div class="asf-num">3</div>
+          <div class="asf-label">Real Projects</div>
+        </div>
+        <div class="about-stat-float asf2">
+          <div class="asf-num">4th</div>
+          <div class="asf-label">Semester · CGPA 2.75</div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <div class="sec-eyebrow">Who I Am</div>
+        <h2 class="sec-title">A <em>thinker</em> who builds.</h2>
+        <p>I'm Abdul Ahad, a BS Computer Science student at AIR University, Islamabad — transitioning into UX Design with a rare advantage: I've actually built the things I want to design.</p>
+        <p>Having designed GUIs, user flows, and data-driven interfaces while coding them in Python and C++, I understand what makes a design buildable, scalable, and genuinely useful. I approach every design problem like an engineer and every engineering problem like a designer.</p>
+        <p>I'm analytical and detail-obsessed, with a love for chess that sharpens my strategic thinking. I'm deeply curious about AI/ML, digital transformation, and how good UX can make technology feel human.</p>
+        <div class="about-interests">
+          <div class="skill-group-title">Interests & Hobbies</div>
+          <div class="interest-chips">
+            <span class="interest-chip">♟️ Chess</span>
+            <span class="interest-chip">🤖 AI & ML</span>
+            <span class="interest-chip">🌐 Digital Transformation</span>
+            <span class="interest-chip">📊 Business Analytics</span>
+            <span class="interest-chip">🔍 Problem Solving</span>
+            <span class="interest-chip">🌟 Exploring New Tech</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">Background</div>
+      <h2 class="sec-title">Education</h2>
+    </div>
+    <div class="edu-cards">
+      <div class="edu-card reveal">
+        <div class="edu-year">2024 – PRESENT</div>
+        <div class="edu-degree">BS Computer Science</div>
+        <div class="edu-school">AIR University, Islamabad</div>
+        <div class="edu-detail">4th Semester · CGPA: 2.75 / 4.00</div>
+        <div class="edu-courses">
+          <span class="edu-tag">OOP</span>
+          <span class="edu-tag">DSA</span>
+          <span class="edu-tag">DBMS</span>
+          <span class="edu-tag">Discrete Math</span>
+          <span class="edu-tag">Calculus</span>
+        </div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-year">COMPLETED 2024</div>
+        <div class="edu-degree">FSc Pre-Engineering</div>
+        <div class="edu-school">Punjab Group of Colleges, Shahkot</div>
+        <div class="edu-detail">Marks: 736 / 1100</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner reveal">
+      <div class="sec-eyebrow" style="justify-content:center;">Get In Touch</div>
+      <h2 class="sec-title">Let's create something <em>together.</em></h2>
+      <p class="contact-desc">I'm actively looking for UX internship opportunities and freelance projects. Whether you have a design challenge, an idea, or just want to connect — I'd love to hear from you.</p>
+      <div class="contact-cards">
+        <a href="mailto:abdulahad25423@gmail.com" class="contact-card">
+          <span class="cc-icon">✉️</span> abdulahad25423@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/abdul-ahad25423" target="_blank" class="contact-card">
+          <span class="cc-icon">💼</span> LinkedIn
+        </a>
+        <a href="https://github.com/AbdulAhad1725" target="_blank" class="contact-card">
+          <span class="cc-icon">⚙️</span> GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>Designed & built by <span>Abdul Ahad</span> © 2025</p>
+  <p>UX Designer · CS Student · <span>Islamabad, PK</span></p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 90);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
